@@ -11,8 +11,12 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 DOCX_TPL_DIR = os.path.join(BASE_DIR, "docx_templates")
-GENERATED_DIR = os.path.join(BASE_DIR, "generated")
-INSTANCE_DIR = os.path.join(BASE_DIR, "instance")
+
+# On Vercel (and other read-only serverless runtimes) only /tmp is writable.
+_on_vercel = bool(os.environ.get("VERCEL") or os.environ.get("VERCEL_ENV"))
+GENERATED_DIR = "/tmp/pathbuddy_generated" if _on_vercel else os.path.join(BASE_DIR, "generated")
+INSTANCE_DIR  = "/tmp/pathbuddy_instance"  if _on_vercel else os.path.join(BASE_DIR, "instance")
+
 os.makedirs(GENERATED_DIR, exist_ok=True)
 os.makedirs(INSTANCE_DIR, exist_ok=True)
 
@@ -411,8 +415,8 @@ def index():
 def generate():
     # Header
     result=build_documents_from_form(request)
-    if result.get('pdf_ok'):
-        flash("PDF export failed (DOCX generated). Install Word (docx2pdf) or LibreOffice (soffice) for PDF.", "warning")
+    if not result.get('pdf_ok'):
+        flash("PDF export is not available in this environment — your DOCX files are ready to download.", "warning")
 
     return render_template(
         "success.html",
