@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Preview — Pathbuddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='light_style.css') }}">
+  <style>
+    /* Preview-page-specific overrides */
+    body { background: #F0F1F4; }
+
+    .preview-root {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    .preview-top-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .preview-top-bar h1 {
+      font-size: 1.375rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: #0F1117;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .preview-top-bar .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .preview-section {
+      margin-bottom: 40px;
+    }
+
+    .preview-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .preview-section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #2D3142;
+      letter-spacing: -0.2px;
+    }
+
+    .preview-frame-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #E4E6EB;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -1px rgba(0,0,0,0.04);
+      background: #fff;
+    }
+
+    iframe {
+      width: 100%;
+      height: 860px;
+      border: none;
+      display: block;
+    }
+
+    .empty-state {
+      padding: 48px 24px;
+      text-align: center;
+      color: #6B7280;
+      font-size: 14px;
+      background: #FAFAFA;
+      border-radius: 12px;
+      border: 1px dashed #CDD0D8;
+    }
+
+    .empty-state svg {
+      opacity: 0.35;
+      margin-bottom: 12px;
+    }
+
+    .preview-hint {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #9CA3AF;
+      text-align: center;
+    }
+
+    /* Thin logo strip at top */
+    .preview-nav {
+      background: rgba(248,249,251,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #E4E6EB;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .preview-nav .logo-icon {
+      width: 26px;
+      height: 26px;
+      background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .preview-nav .logo-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0F1117;
+      letter-spacing: -0.3px;
+    }
+
+    .preview-nav-spacer { flex: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Minimal sticky nav -->
+  <div class="preview-nav">
+    <div class="logo-icon">P</div>
+    <span class="logo-text">Pathbuddy</span>
+    <span class="preview-nav-spacer"></span>
+    <span style="font-size:13px;color:#9CA3AF;">Document Preview</span>
+  </div>
+
+  <div class="preview-root">
+
+    <!-- Header row with download buttons -->
+    <div class="preview-top-bar">
+      <h1>Your Generated Documents</h1>
+      <div class="btn-row">
+        {% if cv_pdf %}
+          <a class="btn primary" href="{{ url_for('download', filename=cv_pdf) }}">
+            ↓ Download CV (PDF)
+          </a>
+        {% endif %}
+        {% if cv_docx %}
+          <a class="btn" href="{{ url_for('download', filename=cv_docx) }}">
+            ↓ CV (DOCX)
+          </a>
+        {% endif %}
+        {% if cl_pdf %}
+          <a class="btn primary" href="{{ url_for('download', filename=cl_pdf) }}">
+            ↓ Download Cover Letter (PDF)
+          </a>
+        {% endif %}
+        {% if cl_docx %}
+          <a class="btn" href="{{ url_for('download', filename=cl_docx) }}">
+            ↓ Cover Letter (DOCX)
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- CV section -->
+    <div class="preview-section">
+      <div class="preview-section-header">
+        <span class="preview-section-title">CV Preview</span>
+        {% if cv_pdf %}
+          <a class="btn sm" href="{{ url_for('download', filename=cv_pdf) }}">↓ Download PDF</a>
+        {% endif %}
+        {% if cv_docx %}
+          <a class="btn sm" href="{{ url_for('download', filename=cv_docx) }}">↓ Download DOCX</a>
+        {% endif %}
+      </div>
+
+      {% if cv_pdf %}
+        <div class="preview-frame-wrap">
+          <iframe src="{{ url_for('pdfshow', filename=cv_pdf) }}" title="CV PDF Preview"></iframe>
+        </div>
+      {% else %}
+        <div class="empty-state">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#E5E7EB"/><path d="M13 12h14M13 18h14M13 24h8" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/></svg>
+          <p>PDF preview is not available. Download the DOCX version to view and edit your CV.</p>
+          {% if cv_docx %}
+            <a class="btn sm" href="{{ url_for('download', filename=cv_docx) }}" style="margin-top:12px;display:inline-flex;">↓ Download CV (DOCX)</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Cover Letter section -->
+    <div class="preview-section">
+      <div class="preview-section-header">
+        <span class="preview-section-title">Cover Letter Preview</span>
+        {% if cl_pdf %}
+          <a class="btn sm" href="{{ url_for('download', filename=cl_pdf) }}">↓ Download PDF</a>
+        {% endif %}
+        {% if cl_docx %}
+          <a class="btn sm" href="{{ url_for('download', filename=cl_docx) }}">↓ Download DOCX</a>
+        {% endif %}
+      </div>
+
+      {% if cl_pdf %}
+        <div class="preview-frame-wrap">
+          <iframe src="{{ url_for('pdfshow', filename=cl_pdf) }}" title="Cover Letter PDF Preview"></iframe>
+        </div>
+      {% else %}
+        <div class="empty-state">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#E5E7EB"/><path d="M12 14l8 6 8-6M12 14h16v14H12V14z" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p>PDF preview is not available. Download the DOCX version to view and edit your cover letter.</p>
+          {% if cl_docx %}
+            <a class="btn sm" href="{{ url_for('download', filename=cl_docx) }}" style="margin-top:12px;display:inline-flex;">↓ Download Cover Letter (DOCX)</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <p class="preview-hint">Keep this tab open to review your documents. Return to the form tab to make edits, then click &ldquo;Generate&rdquo; again to refresh.</p>
+
+  </div>
+</body>
+</html>

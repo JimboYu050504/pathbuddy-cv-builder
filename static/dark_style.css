@@ -1,0 +1,54 @@
+:root { --bg:#0b0c10; --card:#111319; --muted:#9aa1ad; --fg:#e8ecf1; --pri:#6ea8fe; --acc:#59f; }
+*{box-sizing:border-box} body{margin:0;font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Apple Color Emoji,Segoe UI Emoji;background:var(--bg);color:var(--fg)}
+.container{max-width:980px;margin:0 auto;padding:24px}
+.site-header,.site-footer{background:transparent;border-bottom:1px solid #1b1e27}
+.site-footer{border-top:1px solid #1b1e27;border-bottom:none;margin-top:32px}
+h1,h2,h3{margin:8px 0 12px} .muted{color:var(--muted)}
+.flash-area{margin:10px 0} .flash{padding:10px;border-radius:8px;background:#22283a} .flash.warning{border:1px solid #f0c674}
+form .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+label{display:flex;flex-direction:column;font-size:14px;gap:6px}
+input,textarea{padding:10px;border-radius:10px;border:1px solid #2a2f3f;background:#0f1220;color:var(--fg)}
+.full{grid-column:1/-1}
+.steps .step{display:none;background:var(--card);padding:20px;border-radius:14px;border:1px solid #1b1e27}
+.steps .step.active{display:block}
+.nav{display:flex;gap:10px;margin-top:16px}
+.btn{padding:10px 14px;border-radius:12px;border:1px solid #2a2f3f;background:#141827;color:var(--fg);cursor:pointer}
+.btn:hover{background:#192034}
+.btn.primary{background:var(--pri);color:#081018;border-color:transparent;font-weight:600}
+.btn.ghost{background:transparent;border:1px dashed #2a2f3f}
+.icon-btn.remove{position:absolute;right:8px;top:8px;border:none;background:#2a2f3f;color:#fff;border-radius:50%;width:28px;height:28px}
+.repeat-list{display:flex;flex-direction:column;gap:12px}
+.repeat-item{position:relative;border:1px dashed #2a2f3f;border-radius:14px;padding:12px}
+.review{background:var(--card);border:1px solid #1b1e27;padding:12px;border-radius:12px}
+.review .row{margin-bottom:8px}
+.download-list li{margin:6px 0}
+
+/* === Font size adjustments === */
+
+/* Base font size for the whole page */
+body {
+  font-size: 16px;   /* 原来浏览器默认大约 14px，这里整体调大 */
+  line-height: 1.6;
+}
+
+/* Form labels slightly bigger (原来14px) */
+label {
+  font-size: 16px;
+}
+
+/* Inputs and textareas follow the body size */
+input, textarea, select {
+  font-size: inherit;
+}
+
+/* Buttons larger text */
+.btn {
+  font-size: 18px;       /* 比正文更大 */
+  padding: 12px 18px;    /* 内边距也适当增加，按钮更协调 */
+}
+
+/* Headings can also scale a bit */
+h1 { font-size: 2rem; }  /* 大约 32px */
+h2 { font-size: 1.5rem; }/* 大约 24px */
+h3 { font-size: 1.25rem; }/* 大约 20px */
+

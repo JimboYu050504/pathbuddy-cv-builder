@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="success-wrap">
+
+    <!-- Hero -->
+    <div class="success-hero">
+      <div class="success-check">✓</div>
+      <h2>Your documents are ready!</h2>
+      <p>Download your polished CV and cover letter below. Both DOCX and PDF formats are available.</p>
+    </div>
+
+    <!-- Download cards grid -->
+    <div class="download-grid">
+
+      {% if cv_docx %}
+      <a class="download-card" href="{{ url_for('download', filename=cv_docx) }}">
+        <div class="download-card-icon dl-icon-docx">📄</div>
+        <div class="download-card-info">
+          <span class="download-card-name">CV — Word Document</span>
+          <span class="download-card-type">DOCX · Editable</span>
+        </div>
+      </a>
+      {% endif %}
+
+      {% if cv_pdf %}
+      <a class="download-card" href="{{ url_for('download', filename=cv_pdf) }}">
+        <div class="download-card-icon dl-icon-pdf">📋</div>
+        <div class="download-card-info">
+          <span class="download-card-name">CV — PDF</span>
+          <span class="download-card-type">PDF · Print-ready</span>
+        </div>
+      </a>
+      {% endif %}
+
+      {% if cl_docx %}
+      <a class="download-card" href="{{ url_for('download', filename=cl_docx) }}">
+        <div class="download-card-icon dl-icon-cl">✉️</div>
+        <div class="download-card-info">
+          <span class="download-card-name">Cover Letter — Word Document</span>
+          <span class="download-card-type">DOCX · Editable</span>
+        </div>
+      </a>
+      {% endif %}
+
+      {% if cl_pdf %}
+      <a class="download-card" href="{{ url_for('download', filename=cl_pdf) }}">
+        <div class="download-card-icon dl-icon-pdf">📝</div>
+        <div class="download-card-info">
+          <span class="download-card-name">Cover Letter — PDF</span>
+          <span class="download-card-type">PDF · Print-ready</span>
+        </div>
+      </a>
+      {% endif %}
+
+    </div>
+
+    <!-- Actions -->
+    <div class="success-actions">
+      <a href="{{ url_for('index') }}" class="btn">
+        ← Generate Another
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
